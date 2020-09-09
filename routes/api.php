@@ -23,19 +23,22 @@ Route::group(['prefix'=>'Categorie'], function(){
     Route::match(['post','put'],'/{id}', 'CategorieController@update');  
     Route::delete('/{id}', 'CategorieController@destroy');  
     Route::get('/', 'CategorieController@index');  
+    Route::get('/{id}','CategorieController@find');
 });
 
 Route::group(['prefix'=>'Magasin'], function(){
     Route::post('/', 'MagasinController@create'); 
     Route::match(['post','put'],'/{id}', 'MagasinController@update');  
     Route::delete('/{id}', 'MagasinController@destroy');  
-    Route::get('/', 'MagasinController@index');  
+    Route::get('/', 'MagasinController@index'); 
+    Route::get('/{id}','MagasinController@find'); 
 });
 
 Route::group(['prefix'=>'Product'], function(){
     Route::post('/', 'ProductController@create'); 
     Route::match(['post','put'],'/{id}', 'ProductController@update');  
     Route::delete('/{id}', 'ProductController@destroy');  
-    Route::get('/', 'ProductController@index');  
+    Route::get('/', 'ProductController@index');
+    Route::get('/{id}','ProduitController@find');  
 });
 

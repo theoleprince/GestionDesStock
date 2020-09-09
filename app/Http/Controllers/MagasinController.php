@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Magasin;
+use App\APIError;
 use Illuminate\Http\Request;
 
 class MagasinController extends Controller
@@ -78,9 +79,24 @@ class MagasinController extends Controller
      * @param  \App\Magasin  $magasin
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Magasin $magasin)
+    public function update(Request $req, $id)
     {
-        //
+        $magasin = Magasin::find($id);
+        if(!$magasin){
+            abort(404,"CATEGORIE NOT FOUND WITH ID $id");
+        }
+
+        $data = $req->all();
+        $data = $req->validate([
+            'nom_magasin' => 'required', 
+            'description' => 'required',
+        ]);
+        
+        if($data['nom_magasin']) $magasin ->nom_magasin = $data['nom_magasin'];
+       
+       if($data['description']) $magasin ->description = $data['description'];
+        $magasin->update();
+        return response()->json($magasin);
     }
 
     /**
@@ -91,7 +107,22 @@ class MagasinController extends Controller
      */
     public function destroy($id)
     {
-        Magasin::where('id', $id)->destroy();
+        Magasin::where('id', $id)->delete();
         return response()->json(200);
     }
+    //recherche d'element a partir de son id 
+
+    public function find($id){
+       
+        $magasin = Magasin::find($id);
+        if($magasin == null){
+            $notfound = new APIError;
+            $notfound->setStatus("404");
+            $notfound->setCode("SERVICE_NOT_FOUND");
+            $notfound->setMessage("Service id not found in database.");
+ 
+            return response()->json($notFound, 404);
+        }
+        return response()->json($magasin);
+      }
 }
