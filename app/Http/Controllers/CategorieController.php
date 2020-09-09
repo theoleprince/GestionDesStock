@@ -77,9 +77,26 @@ class CategorieController extends Controller
      * @param  \App\Categorie  $categorie
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Categorie $categorie)
+    public function update(Request $req,  $id)
     {
-        //
+        $categorie = Categorie::find($id);
+
+        if(!$categorie){
+            abort(404,"CATEGORIE NOT FOUND WITH ID $id");
+        }
+
+        $data = $req->all();
+        $data = $req->validate([
+            'nom_categorie' => 'required', 
+            'description' => 'required',
+        ]);
+        
+        if($data['nom_categorie']) $categorie ->nom_categorie = $data['nom_categorie'];
+       
+       if($data['description']) $categorie ->description = $data['description'];
+        $categorie->update();
+        return response()->json($categorie);
+        
     }
 
     /**
@@ -92,4 +109,19 @@ class CategorieController extends Controller
     {
         //
     }
+
+     // methode pour rechercher une categorie en base de donnee
+     public function find($id){
+       
+       $categorie = Categorie::find($id);
+       if($categorie == null){
+           $notfound = new APIError;
+           $notfound->setStatus("404");
+           $notfound->setCode("SERVICE_NOT_FOUND");
+           $notfound->setMessage("Service id not found in database.");
+
+           return response()->json($notFound, 404);
+       }
+       return response()->json($categorie);
+     }
 }

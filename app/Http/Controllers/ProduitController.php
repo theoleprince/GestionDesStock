@@ -1,20 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Magasin;
+
+use App\Produit;
 use Illuminate\Http\Request;
 
-class MagasinController extends Controller
+class ProduitController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $req)
+    public function index()
     {
-        $data = Magasin::simplePaginate($req->has('limit') ? $req->limit:15);
-       return response()->json($data);
+        $data = Produit::simplePaginate($req->has('limit') ? $req->limit : 15);
+        return response()->json($data);
     }
 
     /**
@@ -22,20 +23,9 @@ class MagasinController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $req)
+    public function create()
     {
-        $data = $req->all();
-        $data = $req->validate([
-            'nomMagasin' =>  'required',
-            'capacite' => 'required',
-            'description' => 'required',
-        ]);
-        $CategorieUpdate = new Magasin();
-        $CategorieUpdate->nomMagasin = $data['nomMagasin'];
-        $CategorieUpdate->description = $data['description'];
-        $CategorieUpdate->capacite = $data['capacite'];
-        $CategorieUpdate->save();
-        return response()->json( $CategorieUpdate);
+        //
     }
 
     /**
@@ -52,10 +42,10 @@ class MagasinController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Produit  $produit
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Produit $produit)
     {
         //
     }
@@ -63,10 +53,10 @@ class MagasinController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Magasin  $magasin
+     * @param  \App\Produit  $produit
      * @return \Illuminate\Http\Response
      */
-    public function edit(Magasin $magasin)
+    public function edit(Produit $produit)
     {
         //
     }
@@ -75,10 +65,10 @@ class MagasinController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Magasin  $magasin
+     * @param  \App\Produit  $produit
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Magasin $magasin)
+    public function update(Request $request, Produit $produit)
     {
         //
     }
@@ -86,12 +76,11 @@ class MagasinController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Produit  $produit
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Produit $produit)
     {
-        Magasin::where('id', $id)->destroy();
-        return response()->json(200);
+        //
     }
 }
