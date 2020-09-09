@@ -20,5 +20,24 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'categorie'], function() {
     Route::post('/','CategorieController@create');
-    Route::put('/{$id}', 'CategorieController@update');
+    Route::match(['post','put'],'/{id}', 'CategorieController@update');
+    Route::delete('/{id}','CategorieController@destroy');
+    Route::get('/','CategorieController@index');
+    Route::get('/{id}','CategorieController@find');
+});
+
+Route::group(['prefix' => 'magasin'], function() {
+    Route::post('/','MagasinController@create');
+    Route::match(['post','put'],'/{id}', 'MagasinController@update');
+    Route::delete('/{id}','MagasinController@destroy');
+    Route::get('/','MagasinController@index');
+    Route::get('/{id}','MagasinController@find');
+});
+
+Route::group(['prefix' => 'produit'], function() {
+    Route::post('/','ProduitController@create');
+    Route::match(['post','put'],'/{id}', 'ProduitController@update');
+    Route::delete('/{id}','ProduitController@destroy');
+    Route::get('/','ProduitController@index');
+    Route::get('/{id}','ProduitController@find');
 });

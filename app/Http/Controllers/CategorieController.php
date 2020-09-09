@@ -10,7 +10,7 @@ class CategorieController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * 
      * @return \Illuminate\Http\Response
      */
     public function index(Request $req)
@@ -81,7 +81,6 @@ class CategorieController extends Controller
     public function update(Request $req,  $id)
     {
         $categorie = Categorie::find($id);
-
         if(!$categorie){
             abort(404,"CATEGORIE NOT FOUND WITH ID $id");
         }
@@ -106,9 +105,11 @@ class CategorieController extends Controller
      * @param  \App\Categorie  $categorie
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Categorie $categorie)
+    public function destroy( $id)
     {
-        //
+        
+        Categorie::where('id', $id)->delete();
+        return response()->json(200);
     }
 
      // methode pour rechercher une categorie en base de donnee
