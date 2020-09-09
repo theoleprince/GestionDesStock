@@ -17,3 +17,25 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['prefix'=>'Categorie'], function(){
+    Route::post('/', 'CategorieController@create'); 
+    Route::match(['post','put'],'/{id}', 'CategorieController@update');  
+    Route::delete('/{id}', 'CategorieController@destroy');  
+    Route::get('/', 'CategorieController@index');  
+});
+
+Route::group(['prefix'=>'Magasin'], function(){
+    Route::post('/', 'MagasinController@create'); 
+    Route::match(['post','put'],'/{id}', 'MagasinController@update');  
+    Route::delete('/{id}', 'MagasinController@destroy');  
+    Route::get('/', 'MagasinController@index');  
+});
+
+Route::group(['prefix'=>'Product'], function(){
+    Route::post('/', 'ProductController@create'); 
+    Route::match(['post','put'],'/{id}', 'ProductController@update');  
+    Route::delete('/{id}', 'ProductController@destroy');  
+    Route::get('/', 'ProductController@index');  
+});
+
