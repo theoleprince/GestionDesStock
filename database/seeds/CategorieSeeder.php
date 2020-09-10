@@ -14,8 +14,8 @@ class CategorieSeeder extends Seeder
     public function run(\Faker\Generator $faker)
     {
         factory(Categorie::class, 100)->make()->each(function ($categorie) use ($faker) {
-           // $types = App\NomModel::all();
-            //$categorie->type_id = $faker->randomElement($types)->id;
+            //$categorie = App\categorie::all();
+            //$categorie->type_id = $faker->randomElement($categorie)->id;
             $categorie->save();
            
         });

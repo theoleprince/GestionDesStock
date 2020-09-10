@@ -2,11 +2,16 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Model;
+use App\Produit;
 use Faker\Generator as Faker;
 
-$factory->define(Model::class, function (Faker $faker) {
+$factory->define(Produit::class, function (Faker $faker) {
     return [
-        //
+        'nom_produit' => $faker->sentence(),
+        'description' => $faker->sentence(),
+        'prix' => $faker->numberBetween(0,100),
+        'quantite' => $faker->sentence(),
+        'photo' => "upload/image.png",
+        
     ];
 });

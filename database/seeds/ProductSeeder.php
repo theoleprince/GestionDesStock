@@ -1,5 +1,5 @@
 <?php
-
+use App\Produit;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -9,8 +9,12 @@ class ProductSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(\Faker\Generator $faker)
     {
-        //
+        factory(Produit::class, 100)->make()->each(function ($produit) use ($faker) {
+             $types = App\Categorie::all();
+             $produit->id_categorie = $faker->randomElement($types)->id;
+             $produit->save();
+        });
     }
 }
