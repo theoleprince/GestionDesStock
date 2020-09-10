@@ -13,7 +13,9 @@ class AssociationController extends Controller
 {
     public function index (Request $req)
     {
+      /* 
       
+      */
         $data = Association::simplePaginate($req->has('limit') ? $req->limit : 15);
         foreach($data as $assoc){
             $type = TypeAssociation::whereId($assoc->typeId)->first();
