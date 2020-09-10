@@ -34,11 +34,11 @@ Route::group(['prefix'=>'Magasin'], function(){
     Route::get('/{id}','MagasinController@find'); 
 });
 
-Route::group(['prefix'=>'Product'], function(){
-    Route::post('/', 'ProductController@create'); 
-    Route::match(['post','put'],'/{id}', 'ProductController@update');  
-    Route::delete('/{id}', 'ProductController@destroy');  
-    Route::get('/', 'ProductController@index');
+Route::group(['prefix'=>'Produit'], function(){
+    Route::post('/', 'ProduitController@create'); 
+    Route::match(['post','put'],'/{id}', 'ProduitController@update');  
+    Route::delete('/{id}', 'ProduitController@destroy');  
+    Route::get('/', 'ProduitController@index');
     Route::get('/{id}','ProduitController@find');  
 });
 

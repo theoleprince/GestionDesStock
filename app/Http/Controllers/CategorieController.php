@@ -14,8 +14,12 @@ class CategorieController extends Controller
      */
     public function index(Request $req)
     {
-       $data = Categorie::simplePaginate($req->has('limit') ? $req->limit:15);
-       return response()->json($data);
+        $data = Categorie::latest()->simplePaginate($req->has('limit') ? $req->limit : 15);
+        //ceci te sera util pour ajouter l'url du serveur a tes images lorsque tu les retournes.
+        /* foreach ($data as $not) {
+            $not->image = url($not->image);
+        } */
+        return response()->json($data);
     }
 
     /**
@@ -80,8 +84,12 @@ class CategorieController extends Controller
     public function update(Request $req,  $id)
     {
         $categorie = Categorie::find($id);
-        if(!$categorie){
-            abort(404,"CATEGORIE NOT FOUND WITH ID $id");
+        if($categorie == null){
+            $notfound = new APIError;
+            $notfound->setStatus("404");
+            $notfound->setCode("CATEGORY_NOT_FOUND");
+            $notfound->setMessage("Category id not found in database.");
+            return response()->json($notfound, 404);
         }
 
         $data = $req->all();
@@ -106,8 +114,16 @@ class CategorieController extends Controller
      */
     public function destroy( $id)
     {
-        
-        Categorie::where('id', $id)->delete();
+        $categorie = Categorie::find($id);
+       if($categorie == null){
+           $notfound = new APIError;
+           $notfound->setStatus("404");
+           $notfound->setCode("CATEGORY_NOT_FOUND");
+           $notfound->setMessage("Category id not found in database.");
+           return response()->json($notfound, 404);
+       }
+
+       $categorie->delete();
         return response()->json(200);
     }
 
@@ -118,10 +134,9 @@ class CategorieController extends Controller
        if($categorie == null){
            $notfound = new APIError;
            $notfound->setStatus("404");
-           $notfound->setCode("SERVICE_NOT_FOUND");
-           $notfound->setMessage("Service id not found in database.");
-
-           return response()->json($notFound, 404);
+           $notfound->setCode("CATEGORY_NOT_FOUND");
+           $notfound->setMessage("Category id not found in database.");
+           return response()->json($notfound, 404);
        }
        return response()->json($categorie);
      }
