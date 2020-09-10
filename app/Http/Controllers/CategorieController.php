@@ -20,6 +20,9 @@ class CategorieController extends Controller
         /* foreach ($data as $not) {
             $not->image = url($not->image);
         } */
+        /* 
+        fdfgfdf
+        */
         return response()->json($data);
     }
 
