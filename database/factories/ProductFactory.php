@@ -10,7 +10,7 @@ $factory->define(Produit::class, function (Faker $faker) {
         'nom_produit' => $faker->sentence(),
         'description' => $faker->sentence(),
         'prix' => $faker->numberBetween(0,100),
-        'quantite' => $faker->sentence(),
+        'quantite' => $faker->numberBetween(0,100),
         'photo' => "upload/image.png",
         
     ];

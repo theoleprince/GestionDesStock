@@ -7,8 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Magasin::class, function (Faker $faker) {
     return [
-        'nomMagasin' => $faker->sentence(),
+        'nom_magasin' => $faker->sentence(),
         'description' => $faker->sentence(),
-        'capacite' => $faker->numberBetween(0,100),
+        //'capacite' => $faker->numberBetween(0,100),
     ];
 });
