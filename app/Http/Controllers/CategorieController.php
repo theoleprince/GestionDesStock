@@ -15,11 +15,14 @@ class CategorieController extends Controller
      */
     public function index(Request $req)
     {
-        $data = Categorie::simplePaginate($req->has('limit') ? $req->limit : 15);
+        $data = Categorie::latest()->simplePaginate($req->has('limit') ? $req->limit : 15);
         //ceci te sera util pour ajouter l'url du serveur a tes images lorsque tu les retournes.
         /* foreach ($data as $not) {
             $not->image = url($not->image);
         } */
+        /* 
+        fdfgfdf
+        */
         return response()->json($data);
     }
 
