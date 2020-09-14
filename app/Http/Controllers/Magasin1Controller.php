@@ -6,16 +6,20 @@ use App\Magasin;
 use App\APIError;
 use Illuminate\Http\Request;
 
-class MagasinController extends Controller
+class Magasin1Controller extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * 
      * @return \Illuminate\Http\Response
      */
     public function index(Request $req)
     {
         $data = Magasin::simplePaginate($req->has('limit') ? $req->limit : 15);
+        //ceci te sera util pour ajouter l'url du serveur a tes images lorsque tu les retournes.
+        /* foreach ($data as $not) {
+            $not->image = url($not->image);
+        } */
         return response()->json($data);
     }
 
@@ -52,10 +56,10 @@ class MagasinController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Magasin  $magasin
+     * @param  \App\Categorie  $categorie
      * @return \Illuminate\Http\Response
      */
-    public function show(Magasin $magasin)
+    public function show(Categorie $categorie)
     {
         //
     }
@@ -63,10 +67,10 @@ class MagasinController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Magasin  $magasin
+     * @param  \App\Categorie  $categorie
      * @return \Illuminate\Http\Response
      */
-    public function edit(Magasin $magasin)
+    public function edit(Categorie $categorie)
     {
         //
     }
@@ -75,14 +79,18 @@ class MagasinController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Magasin  $magasin
+     * @param  \App\Categorie  $categorie
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $req, $id)
+    public function update(Request $req,  $id)
     {
         $magasin = Magasin::find($id);
-        if(!$magasin){
-            abort(404,"CATEGORIE NOT FOUND WITH ID $id");
+        if($magasin == null){
+            $notfound = new APIError;
+            $notfound->setStatus("404");
+            $notfound->setCode("CATEGORY_NOT_FOUND");
+            $notfound->setMessage("Category id not found in database.");
+            return response()->json($notfound, 404);
         }
 
         $data = $req->all();
@@ -91,37 +99,46 @@ class MagasinController extends Controller
             'description' => 'required',
         ]);
         
-        if($data['nom_magasin']) $magasin ->nom_magasin = $data['nom_magasin'];
+         $magasin ->nom_magasin = $data['nom_magasin'];
        
-       if($data['description']) $magasin ->description = $data['description'];
+         $magasin ->description = $data['description'];
         $magasin->update();
         return response()->json($magasin);
+        
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Magasin  $magasin
+     * @param  \App\Categorie  $categorie
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy( $id)
     {
-        Magasin::where('id', $id)->delete();
+        $magasin = Magasin::find($id);
+       if($magasin == null){
+           $notfound = new APIError;
+           $notfound->setStatus("404");
+           $notfound->setCode("CATEGORY_NOT_FOUND");
+           $notfound->setMessage("Category id not found in database.");
+           return response()->json($notfound, 404);
+       }
+
+       $magasin->delete();
         return response()->json(200);
     }
-    //recherche d'element a partir de son id 
 
-    public function find($id){
+     // methode pour rechercher une categorie en base de donnee
+     public function find($id){
        
-        $magasin = Magasin::find($id);
-        if($magasin == null){
-            $notfound = new APIError;
-            $notfound->setStatus("404");
-            $notfound->setCode("SERVICE_NOT_FOUND");
-            $notfound->setMessage("Service id not found in database.");
- 
-            return response()->json($notFound, 404);
-        }
-        return response()->json($magasin);
-      }
+       $magasin = Magasin::find($id);
+       if($magasin == null){
+           $notfound = new APIError;
+           $notfound->setStatus("404");
+           $notfound->setCode("CATEGORY_NOT_FOUND");
+           $notfound->setMessage("Category id not found in database.");
+           return response()->json($notfound, 404);
+       }
+       return response()->json($magasin);
+     }
 }

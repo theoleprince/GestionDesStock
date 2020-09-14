@@ -18,6 +18,34 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('login', 'API\UserController@login');
+Route::post('register', 'API\UserController@register');
+
+Route::group(['middleware' => 'auth:api'], function(){
+Route::post('details', 'API\UserController@details');
+});
+
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('login', 'AuthController@login');
+    Route::post('signup', 'AuthController@signup');
+    Route::get('signup/activate/{token}', 'AuthController@signupActivate');
+  
+    Route::group(['middleware' => 'auth:api'], function() {
+        Route::get('logout', 'AuthController@logout');
+        Route::get('user', 'AuthController@user');
+    });
+});
+
+Route::group([    
+    'namespace' => 'Auth',    
+    'middleware' => 'api',    
+    'prefix' => 'password'
+], function () {    
+    Route::post('create', 'PasswordResetController@create');
+    Route::get('find/{token}', 'PasswordResetController@find');
+    Route::post('reset', 'PasswordResetController@reset');
+});
+
 Route::group(['prefix' => 'categorie'], function() {
     Route::post('/','CategorieController@create');
     Route::match(['post','put'],'/{id}', 'CategorieController@update');
@@ -27,17 +55,17 @@ Route::group(['prefix' => 'categorie'], function() {
 });
 
 Route::group(['prefix' => 'magasin'], function() {
-    Route::post('/','MagasinController@create');
-    Route::match(['post','put'],'/{id}', 'MagasinController@update');
-    Route::delete('/{id}','MagasinController@destroy');
-    Route::get('/','MagasinController@index');
-    Route::get('/{id}','MagasinController@find');
+    Route::post('/','Magasin1Controller@create');
+    Route::match(['post','put'],'/{id}', 'Magasin1Controller@update');
+    Route::delete('/{id}','Magasin1Controller@destroy');
+    Route::get('/','Magasin1Controller@index');
+    Route::get('/{id}','Magasin1Controller@find');
 });
 
 Route::group(['prefix' => 'produit'], function() {
-    Route::post('/','ProduitController@create');
-    Route::match(['post','put'],'/{id}', 'ProduitController@update');
-    Route::delete('/{id}','ProduitController@destroy');
-    Route::get('/','ProduitController@index');
-    Route::get('/{id}','ProduitController@find');
+    Route::post('/','Produit1Controller@create');
+    Route::post('/{id}', 'Produit1Controller@update');
+    Route::delete('/{id}','Produit1Controller@destroy');
+    Route::get('/','Produit1Controller@index');
+    Route::get('/{id}','Produit1Controller@find');
 });
