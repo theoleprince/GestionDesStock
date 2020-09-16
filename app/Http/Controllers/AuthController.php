@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers;
+use Avatar;
+use Storage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,6 +34,8 @@ class AuthController extends Controller
             //'activation_token' => str_random(60)
         ]);
         $user->save();
+        $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
+        Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
         $user->notify(new SignupActivate($user));
         return response()->json([
             'message' => 'Successfully created user!'

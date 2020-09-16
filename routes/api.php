@@ -69,3 +69,7 @@ Route::group(['prefix' => 'produit'], function() {
     Route::get('/','Produit1Controller@index');
     Route::get('/{id}','Produit1Controller@find');
 });
+
+Route::group(['prefix' => 'contacte'], function() {
+    Route::post('/','ContactController@store');
+});
