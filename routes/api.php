@@ -2,6 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\EmailController;
+use App\Mail\ContactMail;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -41,4 +46,32 @@ Route::group(['prefix'=>'Produit'], function(){
     Route::get('/', 'ProduitController@index');
     Route::get('/{id}','ProduitController@find');  
 });
+
+Route::group([
+    'prefix' => 'auth'
+], function () {
+    Route::post('login', [AuthController::class,'login']);
+    Route::post('signup', [AuthController::class,'signup']);
+    Route::get('signup/activate/{token}', [AuthController::class,'signupActivate']);
+  
+    Route::group([
+      'middleware' => 'auth:api'
+    ], function() {
+        Route::get('logout', [AuthController::class,'logout']);
+        Route::get('user', [AuthController::class,'user']);
+    });
+});
+
+Route::group([    
+    'namespace' => 'Auth',    
+    'middleware' => 'api',    
+    'prefix' => 'password'
+], function () {    
+    Route::post('create', [PasswordResetController::class,'create']);
+    Route::get('find/{token}', [PasswordResetController::class,'find']);
+    Route::post('reset', [PasswordResetController::class,'reset']);
+});
+
+Route::get('/contact', [EmailController::class,'create']);
+Route::post('/store', [EmailController::class,'store']);
 

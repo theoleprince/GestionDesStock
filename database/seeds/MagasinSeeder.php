@@ -1,5 +1,5 @@
 <?php
-
+use App\Magasin;
 use Illuminate\Database\Seeder;
 
 class MagasinSeeder extends Seeder

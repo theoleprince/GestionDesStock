@@ -19,6 +19,7 @@ class CreateMagasinsTable extends Migration
             $table->timestamps();
             $table->string('nom_magasin');
             $table->string('description');
+            $table->string('capacite');
         });
     }
 

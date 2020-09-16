@@ -33,8 +33,25 @@ class ProduitController extends Controller
             'quantite' => 'required',
             'prix' => 'required',
             'id_categorie' => 'required',
-            'photo' => 'required',
+            
+            
         ]);
+
+        $path1 = " ";
+        //upload image
+        if(isset($request->photo)){
+            $photo = $request->file('photo'); 
+            if($photo != null){
+                $extension = $photo->getClientOriginalExtension();
+                $relativeDestination = "uploads/Produit";
+                $destinationPath = public_path($relativeDestination);
+                $safeName = "Produit".time().'.'.$extension;
+                $photo->move($destinationPath, $safeName);
+                $path1 = "$relativeDestination/$safeName";
+            }
+        }
+        $data['photo'] = $path1;
+
         $produit = new Produit();
         $produit ->nom_produit = $data['nom_produit'];
         $produit ->description = $data['description'];
@@ -89,8 +106,12 @@ class ProduitController extends Controller
     public function update(Request $req, $id)
     {
         $produit = Produit::find($id);
-        if(!$produit){
-            abort(404,"CATEGORIE NOT FOUND WITH ID $id");
+        if($produit == null){
+            $notfound = new APIError;
+            $notfound->setStatus("404");
+            $notfound->setCode("PRODUCT_NOT_FOUND");
+            $notfound->setMessage("product id not found in database.");
+            return response()->json($notfound, 404);
         }
 
         $data = $req->all();

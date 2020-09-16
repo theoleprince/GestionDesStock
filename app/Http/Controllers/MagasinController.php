@@ -25,14 +25,23 @@ class MagasinController extends Controller
      */
     public function create(Request $req)
     {
+        $categorie = Magasin::find($id);
+        if($categorie == null){
+            $notfound = new APIError;
+            $notfound->setStatus("404");
+            $notfound->setCode("MAGASIN_NOT_FOUND");
+            $notfound->setMessage("magasin id not found in database.");
+            return response()->json($notfound, 404);
+        }
+
         $data = $req->all();
         $data = $req->validate([
-            'nomMagasin' =>  'required',
+            'nom_magasin' =>  'required',
             'capacite' => 'required',
             'description' => 'required',
         ]);
         $CategorieUpdate = new Magasin();
-        $CategorieUpdate->nomMagasin = $data['nomMagasin'];
+        $CategorieUpdate->nom_magasin = $data['nom_magasin'];
         $CategorieUpdate->description = $data['description'];
         $CategorieUpdate->capacite = $data['capacite'];
         $CategorieUpdate->save();
@@ -90,6 +99,7 @@ class MagasinController extends Controller
         $data = $req->validate([
             'nom_magasin' => 'required', 
             'description' => 'required',
+            'capacite' => 'required',
         ]);
         
         if($data['nom_magasin']) $magasin ->nom_magasin = $data['nom_magasin'];
