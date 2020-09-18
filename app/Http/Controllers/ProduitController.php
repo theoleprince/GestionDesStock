@@ -162,4 +162,15 @@ class ProduitController extends Controller
         }
         return response()->json($produit);
       }
+
+     /* public function findProduitCategorie(Request $req, $id)
+    {
+        $prod = Produit::select('Produit.*','Magasin.*')
+        ->join('Magasin', 'Produit.id', '=', 'parishs.id' )
+        ->join('type_associations', 'associations.type_id', '=', 'type_associations.id' )
+        ->join('users', 'associations.user_id', '=', 'users.id' )
+        ->where(['associations.type_id' => $id])
+        ->simplePaginate($req->has('limit') ? $req->limit : 15);
+        return response()->json($parishAssociation);
+    }*/
 }

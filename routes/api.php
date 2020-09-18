@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\EtagereController;
+use App\Http\Controllers\LivreController;
+use App\Http\Controllers\ProduitMagasinController;
 use App\Mail\ContactMail;
 
 
@@ -40,7 +43,7 @@ Route::group(['prefix'=>'Magasin'], function(){
 });
 
 Route::group(['prefix'=>'Produit'], function(){
-    Route::post('/', 'ProduitController@create'); 
+    Route::post('/', [ProduitController::class,'create']); 
     Route::match(['post','put'],'/{id}', 'ProduitController@update');  
     Route::delete('/{id}', 'ProduitController@destroy');  
     Route::get('/', 'ProduitController@index');
@@ -48,15 +51,32 @@ Route::group(['prefix'=>'Produit'], function(){
 });
 
 Route::group([
+    'prefix' => 'Etagere'
+], function () {
+    Route::post('/ceate', [EtagereController::class,'create']);
+    //Route::match('/update', [EtagereController::class,'update']);
+    //Route::delete('/destroy', [EtagereController::class,'destroy']);
+  
+});
+
+Route::group([
+    'prefix' => 'Livre'
+], function () {
+    Route::post('/ceate', [LivreController::class,'create']);
+    //Route::match('/update', [LivreController::class,'update']);
+    //Route::delete('/destroy', [LivreController::class,'destroy']);
+  
+});
+
+
+Route::group([
     'prefix' => 'auth'
 ], function () {
-    Route::post('login', [AuthController::class,'login']);
     Route::post('signup', [AuthController::class,'signup']);
+    Route::post('login', [AuthController::class,'login']);
     Route::get('signup/activate/{token}', [AuthController::class,'signupActivate']);
   
-    Route::group([
-      'middleware' => 'auth:api'
-    ], function() {
+    Route::group(['middleware' => 'auth:api' ], function() {
         Route::get('logout', [AuthController::class,'logout']);
         Route::get('user', [AuthController::class,'user']);
     });
@@ -74,4 +94,11 @@ Route::group([
 
 Route::get('/contact', [EmailController::class,'create']);
 Route::post('/store', [EmailController::class,'store']);
+
+Route::group([
+    'prefix' => 'ProduitMagasin'
+], function () {
+    Route::post('/', [ProduitMagasinController::class,'create']);
+  
+});
 

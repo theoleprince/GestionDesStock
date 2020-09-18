@@ -16,6 +16,7 @@
         "laravel/helpers": "^1.3",
         "laravel/passport": "9.*",
         "laravel/tinker": "^2.0",
+        "laravolt/avatar": "^4.0",
         "nesbot/carbon": "^2.39"
     },
     "require-dev": {
