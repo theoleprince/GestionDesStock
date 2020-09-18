@@ -15,10 +15,10 @@ class Produit1Controller extends Controller
      */
     public function index(Request $req)
     {
-        $data = Categorie::simplePaginate($req->has('limit') ? $req->limit : 15);
+        $data = Produit::simplePaginate($req->has('limit') ? $req->limit : 15);
         //ceci te sera util pour ajouter l'url du serveur a tes images lorsque tu les retournes.
          foreach ($data as $not) {
-            $not->image = url($not->image);
+            $not->photo = url($not->photo);
         } 
         return response()->json($data);
     }
@@ -39,7 +39,7 @@ class Produit1Controller extends Controller
             'photo' => 'required',
         ]);
         $data = [];
-        $data = array_merge($data, $request->only([
+        $data = array_merge($data, $req->only([
             'nom_produit', 
             'id_categorie',
             'prix',
@@ -192,5 +192,14 @@ class Produit1Controller extends Controller
            return response()->json($notfound, 404);
        }
        return response()->json($produit);
+     }
+
+     public function findProduitCategorie(Request $req, $id)
+     {
+         $produitcategorie = Produit::select('categories.*','produits.*')
+         ->join('categories', 'produits.id_categorie', '=', 'categories.id' )        
+         ->where(['produit_magasins.id_magasin' => $id])
+         ->simplePaginate($req->has('limit') ? $req->limit : 15);
+         return response()->json($produitcategorie); 
      }
 }

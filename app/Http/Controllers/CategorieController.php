@@ -144,4 +144,16 @@ class CategorieController extends Controller
        }
        return response()->json($categorie);
      }
+
+     public function findProduitCategorie(Request $req, $id)
+     {
+         $produitmagasin = Categorie::select('categories.nom_categorie','categories.description as description_categorie','categories.id','produits.id as id_produit','produits.nom_produit','produits.prix','produits.photo')
+         ->join('produits', 'produits.id_categorie', '=', 'categories.id' )        
+         ->where(['categories.id' => $id])
+         ->simplePaginate($req->has('limit') ? $req->limit : 15);
+         foreach ($produitmagasin as $not) {
+            $not->photo = url($not->photo);
+        }
+         return response()->json($produitmagasin); 
+     }
 }

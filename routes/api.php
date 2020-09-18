@@ -52,6 +52,7 @@ Route::group(['prefix' => 'categorie'], function() {
     Route::delete('/{id}','CategorieController@destroy');
     Route::get('/','CategorieController@index');
     Route::get('/{id}','CategorieController@find');
+    Route::get('/{id}/categorie','CategorieController@findProduitCategorie');
 });
 
 Route::group(['prefix' => 'magasin'], function() {
@@ -72,4 +73,9 @@ Route::group(['prefix' => 'produit'], function() {
 
 Route::group(['prefix' => 'contacte'], function() {
     Route::post('/','ContactController@store');
+});
+
+Route::group(['prefix' => 'jointure'], function() {
+    Route::post('/','ProduitMagasinController@create');
+    Route::get('/{id}/magasin','ProduitMagasinController@findProduitMagasin3');
 });
